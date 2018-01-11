@@ -19,6 +19,7 @@ public class GameFrame extends JPanel implements Field {
         g.setStroke(new BasicStroke(5));
         g.setColor(Color.green);
         g.fillRect(0, 0, (int) (FEILD.width*SCALEFACTOR), (int) (FEILD.height*SCALEFACTOR));
-        //g.drawRect(0, 0, (int) (FEILD.getWidth()*SCALEFACTOR), (int) (FEILD.height*SCALEFACTOR));
+        g.setColor(Color.gray);
+        g.drawRect(2, 2, (int) (FEILD.getWidth()*SCALEFACTOR-5), (int) (FEILD.height*SCALEFACTOR)-5);
     }
 }
