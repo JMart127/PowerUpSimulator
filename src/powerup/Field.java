@@ -6,14 +6,24 @@
 package powerup;
 
 import java.awt.Dimension;
-import java.awt.Polygon;
 import java.awt.Toolkit;
 
 
 public interface Field {
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    double SCALEFACTOR = screen.height/360.0 > screen.width/888.0 ? screen.width/888.0 : screen.height/360.0;
+    double PPI = screen.height/360.0 > screen.width/888.0 ? screen.width/888.0 : screen.height/360.0; //Pixels for everyinch of feild
     Dimension FEILD = new Dimension(888,360); //start 0,0
-    int[][] PLAYINGCORDS = {{},{}};
-    Polygon PLAYING = new Polygon(PLAYINGCORDS[0], PLAYINGCORDS[1], PLAYINGCORDS[0].length);
+    double[][] PLAYINGCORDS = {{120,155,733,768,768,733,155,120},{48,18.31,18.31,48,312,341.69,341.69,312}};
+    double LOWEDGE=18.31;
+    double HIGHEDGE=341.69;
+    int LEFTEDGE=120;
+    int RIGHTEDGE=768;
+    int LAUTOLINE=240;
+    int RAUTOLINE=648;
+    int MIDDLEX=444;
+    int MIDDLEY=180;
+    double[][] LFENCE = {{LEFTEDGE+140, LEFTEDGE+196, LEFTEDGE+196, LEFTEDGE+140},
+        {LOWEDGE+86.25,LOWEDGE+86.25, HIGHEDGE-86.25, HIGHEDGE-86.25}};
+    double[][] RFENCE = {{RIGHTEDGE-140, RIGHTEDGE-196, RIGHTEDGE-196, RIGHTEDGE-140},
+        {LOWEDGE+86.25,LOWEDGE+86.25, HIGHEDGE-86.25, HIGHEDGE-86.25}};
 }
