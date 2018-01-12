@@ -27,7 +27,7 @@ public class GameFrame extends JPanel implements Field {
         g.setColor(Color.gray);
         g.drawRect(2, 2, (int) (FEILD.getWidth()*PPI-5), (int) (FEILD.height*PPI)-5);
         //playing field
-        g.setStroke(new BasicStroke(5));
+        g.setStroke(new BasicStroke(2));
         g.setColor(Color.black);
         Polygon field = new Polygon();
         for(int i = 0; i < PLAYINGCORDS[0].length; i++) {
@@ -50,5 +50,14 @@ public class GameFrame extends JPanel implements Field {
         }
         g.drawPolygon(rFence);
         //Plates
+        g.setColor(Color.red);
+        Polygon[] plates = new Polygon[6];
+        for (int i = 0; i < PLATES.length; i++) {
+            plates[i] = new Polygon();
+            for (int j = 0; j < PLATES[i][0].length; j++) {
+                plates[i].addPoint((int) (PLATES[i][0][j]*PPI), (int)(PLATES[i][1][j]*PPI));
+            }
+            g.drawPolygon(plates[i]);
+        }
     }
 }

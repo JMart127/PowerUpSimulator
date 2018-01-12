@@ -26,4 +26,20 @@ public interface Field {
         {LOWEDGE+86.25,LOWEDGE+86.25, HIGHEDGE-86.25, HIGHEDGE-86.25}};
     double[][] RFENCE = {{RIGHTEDGE-140, RIGHTEDGE-196, RIGHTEDGE-196, RIGHTEDGE-140},
         {LOWEDGE+86.25,LOWEDGE+86.25, HIGHEDGE-86.25, HIGHEDGE-86.25}};
+    //six plates going from left to right top then bottom
+    double[][][] PLATES = {
+        //56 inch gap between two fences; plates are only 4x3
+        {{LFENCE[0][0]+4,LFENCE[0][1]-4,LFENCE[0][2]-4,LFENCE[0][3]+4},
+            {LFENCE[1][0]+4,LFENCE[1][1]+4,LFENCE[1][0]+40,LFENCE[1][1]+40}},
+//        {{x1,x2,x3,x4},
+//            {y1,y2,y3,y4}},
+        {{RFENCE[0][0]-4,RFENCE[0][1]+4,RFENCE[0][2]+4,RFENCE[0][3]-4},
+            {RFENCE[1][0]+4,RFENCE[1][1]+4,RFENCE[1][0]+40,RFENCE[1][1]+40}},
+        {{LFENCE[0][0]+4,LFENCE[0][1]-4,LFENCE[0][2]-4,LFENCE[0][3]+4},
+            {LFENCE[1][2]-4,LFENCE[1][3]-4,LFENCE[1][2]-40,LFENCE[1][3]-40}},
+//        {{x1,x2,x3,x4},
+//            {y1,y2,y3,y4}},
+        {{RFENCE[0][0]-4,RFENCE[0][1]+4,RFENCE[0][2]+4,RFENCE[0][3]-4},
+            {RFENCE[1][2]-4,RFENCE[1][3]-4,RFENCE[1][2]-40,RFENCE[1][3]-40}}   
+    };
 }
