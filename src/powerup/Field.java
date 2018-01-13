@@ -18,8 +18,8 @@ public interface Field {
     double HIGHEDGE=341.69;
     int LEFTEDGE=120;
     int RIGHTEDGE=768;
-    int LAUTOLINE=240;
-    int RAUTOLINE=648;
+    int LAUTOLINE=LEFTEDGE+120;
+    int RAUTOLINE=RIGHTEDGE-120;
     int MIDDLEX=444;
     int MIDDLEY=180;
     double[][] LFENCE = {{LEFTEDGE+140, LEFTEDGE+196, LEFTEDGE+196, LEFTEDGE+140},
@@ -42,4 +42,6 @@ public interface Field {
         {{RFENCE[0][0]-4,RFENCE[0][1]+4,RFENCE[0][2]+4,RFENCE[0][3]-4},
             {RFENCE[1][2]-4,RFENCE[1][3]-4,RFENCE[1][2]-40,RFENCE[1][3]-40}}   
     };
+    int LSWITCHMID = LEFTEDGE+168;
+    int RSWITCHMID = RIGHTEDGE-168;
 }
