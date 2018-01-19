@@ -44,4 +44,10 @@ public interface Field {
     };
     int LSWITCHMID = LEFTEDGE+168;
     int RSWITCHMID = RIGHTEDGE-168;
+    int NULLZONES[][][] = {
+        {{},
+            {}}, 
+        {{},
+            {}}
+    };
 }
