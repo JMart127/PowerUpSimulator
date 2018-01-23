@@ -27,7 +27,7 @@ public class GameFrame extends JPanel implements Field {
         g.setColor(Color.gray);
         g.drawRect(2, 2, (int) (FEILD.getWidth()*PPI-5), (int) (FEILD.height*PPI)-5);
         //playing field
-        g.setStroke(new BasicStroke(2));
+        g.setStroke(new BasicStroke((int)(2*PPI)));
         g.setColor(Color.black);
         Polygon field = new Polygon();
         for(int i = 0; i < PLAYINGCORDS[0].length; i++) {
@@ -59,12 +59,24 @@ public class GameFrame extends JPanel implements Field {
             }
             g.drawPolygon(plates[i]);
         }
-        //Switches
-        g.setStroke(new BasicStroke(20));
+        //Switch and scale lines
+        g.setStroke(new BasicStroke((int)(10*PPI)));
         g.setColor(Color.black);
-        g.drawLine((int)(LSWITCHMID*PPI), (int)(PLATES[0][1][2]*PPI), (int)(LSWITCHMID*PPI), (int)(PLATES[2][1][2]*PPI)); 
-//change the second one to [3][1][2] when the scalar plate is added
-        g.drawLine((int)(RSWITCHMID*PPI), (int)(PLATES[1][1][2]*PPI), (int)(RSWITCHMID*PPI), (int)(PLATES[3][1][2]*PPI));
-        //change first to [2][1][2] and second to [5][1][2]
+        g.drawLine((int)(LSWITCHMID*PPI), (int)(PLATES[0][1][2]*PPI), (int)(LSWITCHMID*PPI), (int)(PLATES[3][1][2]*PPI)); 
+        g.drawLine((int)(RSWITCHMID*PPI), (int)(PLATES[2][1][2]*PPI), (int)(RSWITCHMID*PPI), (int)(PLATES[5][1][2]*PPI));
+        g.setStroke(new BasicStroke((int)(15*PPI)));
+        g.drawLine((int)(MIDDLEX*PPI), (int)(PLATES[1][1][2]*PPI), (int)(MIDDLEX*PPI), (int)(PLATES[4][1][2]*PPI));
+
+        //Null zones
+        g.setStroke(new BasicStroke(2));
+        //g.setColor(Color.red);
+        Polygon[] nzones = new Polygon[2];
+        for (int i = 0; i < NULLZONES.length; i++) {
+            nzones[i] = new Polygon();
+            for (int j = 0; j < NULLZONES[i][0].length; j++) {
+                nzones[i].addPoint((int) (NULLZONES[i][0][j]*PPI), (int)(NULLZONES[i][1][j]*PPI));
+            }
+            g.drawPolygon(nzones[i]);
+        }
     }
 }

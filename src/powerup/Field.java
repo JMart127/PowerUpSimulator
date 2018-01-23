@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 
 public interface Field {
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    double PPI = screen.height/360.0 > screen.width/888.0 ? screen.width/888.0 : screen.height/360.0; //Pixels for everyinch of feild
+    double PPI = screen.height/360.0 > screen.width/888.0 ? screen.width/888.0 : screen.height/360.0; //Pixels for everyinch of field
     Dimension FEILD = new Dimension(888,360); //start 0,0
     double[][] PLAYINGCORDS = {{120,155,733,768,768,733,155,120},{48,18.31,18.31,48,312,341.69,341.69,312}};
     double LOWEDGE=18.31;
@@ -31,23 +31,23 @@ public interface Field {
         //56 inch gap between two fences; plates are only 4x3
         {{LFENCE[0][0]+4,LFENCE[0][1]-4,LFENCE[0][2]-4,LFENCE[0][3]+4},
             {LFENCE[1][0]+4,LFENCE[1][1]+4,LFENCE[1][0]+40,LFENCE[1][1]+40}},
-//        {{x1,x2,x3,x4},
-//            {y1,y2,y3,y4}},
+        {{LEFTEDGE+299.65,RIGHTEDGE-299.65,RIGHTEDGE-299.65,LEFTEDGE+299.65},
+            {LOWEDGE+71.57,LOWEDGE+71.57,LOWEDGE+107.57,LOWEDGE+107.51}},
         {{RFENCE[0][0]-4,RFENCE[0][1]+4,RFENCE[0][2]+4,RFENCE[0][3]-4},
             {RFENCE[1][0]+4,RFENCE[1][1]+4,RFENCE[1][0]+40,RFENCE[1][1]+40}},
         {{LFENCE[0][0]+4,LFENCE[0][1]-4,LFENCE[0][2]-4,LFENCE[0][3]+4},
             {LFENCE[1][2]-4,LFENCE[1][3]-4,LFENCE[1][2]-40,LFENCE[1][3]-40}},
-//        {{x1,x2,x3,x4},
-//            {y1,y2,y3,y4}},
+        {{LEFTEDGE+299.65,RIGHTEDGE-299.65,RIGHTEDGE-299.65,LEFTEDGE+299.65},
+            {HIGHEDGE-71.57,HIGHEDGE-71.57,HIGHEDGE-107.57,HIGHEDGE-107.51}},
         {{RFENCE[0][0]-4,RFENCE[0][1]+4,RFENCE[0][2]+4,RFENCE[0][3]-4},
             {RFENCE[1][2]-4,RFENCE[1][3]-4,RFENCE[1][2]-40,RFENCE[1][3]-40}}   
     };
     int LSWITCHMID = LEFTEDGE+168;
     int RSWITCHMID = RIGHTEDGE-168;
-    int NULLZONES[][][] = {
-        {{},
-            {}}, 
-        {{},
-            {}}
+    double NULLZONES[][][] = {
+        {{LEFTEDGE+288,RIGHTEDGE-288,RIGHTEDGE-288,LEFTEDGE+288},
+            {LOWEDGE, LOWEDGE, LOWEDGE+95.25, LOWEDGE+95.25}}, 
+        {{LEFTEDGE+288,RIGHTEDGE-288,RIGHTEDGE-288,LEFTEDGE+288},
+            {HIGHEDGE, HIGHEDGE, HIGHEDGE-95.25, HIGHEDGE-95.25}}
     };
 }
