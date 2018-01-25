@@ -7,5 +7,15 @@ public class Robot {
     private int width;
     private boolean team;
     private int speed;
+    private int num;
+    
+    public Robot() {
+        
+    }
+    
+    private void setXY(int num) {
+        
+    }
+    
     
 }
