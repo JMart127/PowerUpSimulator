@@ -10,8 +10,8 @@ import java.awt.Toolkit;
 
 
 public interface Field {
-    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    double PPI = screen.height/360.0 > screen.width/888.0 ? screen.width/888.0 : screen.height/360.0; //Pixels for everyinch of field
+    Dimension SCREEN = Toolkit.getDefaultToolkit().getScreenSize();
+    double PPI = SCREEN.height/360.0 > SCREEN.width/888.0 ? SCREEN.width/888.0 : SCREEN.height/360.0; //Pixels for everyinch of field
     Dimension FEILD = new Dimension(888,360); //start 0,0
     double[][] PLAYINGCORDS = {{120,155,733,768,768,733,155,120},{48,18.31,18.31,48,312,341.69,341.69,312}};
     double LOWEDGE=18.31;

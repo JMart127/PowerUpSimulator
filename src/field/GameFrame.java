@@ -5,12 +5,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.ArrayList;
 import javax.swing.JPanel;
+import objects.Robot;
+import powerup.PowerUp;
 
 public class GameFrame extends JPanel implements Field {
     
     public GameFrame() {
         setSize(500, 500);
+        
     }
     
     @Override
@@ -18,6 +22,7 @@ public class GameFrame extends JPanel implements Field {
         super.paintComponent(og);
         Graphics2D g = (Graphics2D)og;
         drawBoard(g);
+        drawBots(PowerUp.robots, g);
     }
     
     public void drawBoard(Graphics2D g) {
@@ -132,6 +137,14 @@ public class GameFrame extends JPanel implements Field {
         g.drawLine((int)(RSWITCHMID*PPI), (int)(PLATES[2][1][2]*PPI), (int)(RSWITCHMID*PPI), (int)(PLATES[5][1][2]*PPI));
         g.setStroke(new BasicStroke((int)(15*PPI)));
         g.drawLine((int)(MIDDLEX*PPI), (int)(PLATES[1][1][2]*PPI), (int)(MIDDLEX*PPI), (int)(PLATES[4][1][2]*PPI));
-        
+
+    }
+    
+    public void drawBots(ArrayList<Robot> bots, Graphics2D g) {
+        g.setColor(Color.red);
+        g.setStroke(new BasicStroke(2));
+        for (int i = 0; i < bots.size(); i++) {
+            g.drawPolygon(bots.get(i).getShape());
+        }
     }
 }
