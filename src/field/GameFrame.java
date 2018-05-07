@@ -9,6 +9,8 @@ public class GameFrame extends JFrame {
     
     public GameFrame(int number) {
         game = new GamePanel(number);
+        int title = number+1;
+        setTitle("Robot " + title);
         setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
         getContentPane().add(game, BorderLayout.CENTER);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

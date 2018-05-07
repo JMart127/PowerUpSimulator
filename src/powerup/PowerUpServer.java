@@ -10,14 +10,31 @@ public class PowerUpServer {
         System.out.println("It ran");
         PowerUpClient[] clients = new PowerUpClient[6];
         robots = new Robot[6];
-        clients[0] = new PowerUpClient(0);
-        robots[0] = clients[0].frame.getPanel().getRobot();
+        for (int i = 0; i < 6; i++) {
+            clients[i] = new PowerUpClient(i);
+        }
+        for (int i = 0; i < 6; i++) {
+            robots[i] = clients[i].frame.getPanel().getRobot();
+        }
+        for (int i = 0; i < 6; i++) {
+            clients[i].frame.getPanel().setBots(robots);
+        }
+        //clients[0] = new PowerUpClient(0);
+        //robots[0] = clients[0].frame.getPanel().getRobot();
         while(true) {
             try {
                 Thread.sleep(50);
-                clients[0].frame.getPanel().getRobot().doPhysics();
-                //clients[0].frame.getPanel().getRobot().refeshShape();
-                clients[0].frame.getPanel().repaint();
+                for (int i = 0; i < 6; i++) {
+                    clients[i].frame.getPanel().getRobot().doPhysics();
+                }
+//                for (int i = 0; i < 6; i++) {
+//                    clients[0].frame.getPanel().refresh(robots);
+//                }
+                for (int i = 0; i < 6; i++) {
+                    clients[i].frame.getPanel().repaint();
+                }
+                //clients[0].frame.getPanel().getRobot().doPhysics();
+                //clients[0].frame.getPanel().repaint();
 //                for (int i = 0; i < 6; i++) {
 //                    clients[0].frame.getPanel().getRobot().refeshShape();
 //                }
