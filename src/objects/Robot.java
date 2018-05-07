@@ -173,14 +173,14 @@ public class Robot {
     }
     
     public void foward() {
-        dy-= (int)(Math.round(Math.sin(Math.toRadians(angle))*d));
-        dx+= (int)(Math.round(Math.cos(Math.toRadians(angle))*d));
+        dy-= Math.sin(Math.toRadians(angle))*d;
+        dx+= Math.cos(Math.toRadians(angle))*d;
 
     }
     
     public void back() {
-        dy+= (int)(Math.round(Math.sin(Math.toRadians(angle))*d));
-        dx-= (int)(Math.round(Math.cos(Math.toRadians(angle))*d));
+        dy+= Math.sin(Math.toRadians(angle))*d;
+        dx-= Math.cos(Math.toRadians(angle))*d;
     }
     
     private void remakeSquare() {
