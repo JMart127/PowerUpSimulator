@@ -20,12 +20,18 @@ public class GamePanel extends JPanel implements Field {
         bot = new Robot(robot);
         bots = new Robot[6];
         createBots();
+        bots[robotNum] = bot;
+        sendBotsArray();
     }
     
     private void createBots() {
         for (int i = 0; i < 6; i++) {
             bots[i] = new Robot(i);
         }
+    }
+    
+    private void sendBotsArray() {
+        bot.setBotsArray(bots);
     }
     
     @Override
@@ -188,8 +194,5 @@ public class GamePanel extends JPanel implements Field {
     public Robot getRobot() {
         return bot;
     }
-    
-    public void setBot() {
-        bots[robotNum] = bot;
-    }
+
 }

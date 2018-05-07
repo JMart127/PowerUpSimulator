@@ -1,12 +1,19 @@
 package objects;
 
 import field.Field;
+import static field.Field.FENCES;
+import static field.Field.MIDDLEX;
+import static field.Field.PLATES;
+import static field.Field.PLAYINGCORDS;
+import static field.Field.PPI;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
-//import org.jbox2d.dynamics.
+import java.util.ArrayList;
         
 public class Robot {
     
@@ -18,30 +25,41 @@ public class Robot {
     private double y;
     private double dx;
     private double dy;
-    private double d = 1.4;
+    private final double d = 1.4;
     private final boolean red;
     private int angle;
     private Polygon paint;
     private boolean hasCube;
-    AffineTransform transform;
+    public Robot[] bots;
     
     public Robot(int num) {
         this.num = num;
         red = num<3;
         angle = num<3 ? 0 : 180;
         setXY(num);
-        transform = new AffineTransform();
         paint = new Polygon();
         setInitPaint(false);
+    }
+    
+    public void setBotsArray(Robot[] bots) {
+        this.bots=bots;
     }
     
     private void setInitPaint(boolean remake) {
         int x2,y2,a2;
         if(remake) {
-            x2 = paint.xpoints[0];
-            y2 = paint.ypoints[0];
-            paint = new Polygon();
-            a2=0;
+            if(angle==0) {
+                x2 = paint.xpoints[0];
+                y2 = paint.ypoints[0];
+                paint = new Polygon();
+                a2=0; 
+            } else {
+                x2 = paint.xpoints[0];
+                y2 = paint.ypoints[0];
+                paint = new Polygon();
+                a2=180; 
+            }
+            
         } else {
             x2=toInt(x);
             y2=toInt(y);
@@ -106,11 +124,11 @@ public class Robot {
         y=toInt(y*Field.PPI);
     }
     
-    public int toInt(double d) {
+    private int toInt(double d) {
         return (int)(Math.round(d));
     }
     
-    public void refreshShape(int angle) {
+    private void refreshShape(int angle) {
         Point center = calculateCenter(paint); 
         //System.out.println("d0 is " + d0);
         int len = paint.npoints;
@@ -121,25 +139,39 @@ public class Robot {
         Point2D[] newPts = new Point2D[len];
         AffineTransform.getRotateInstance(Math.toRadians(angle), center.x, center.y)
                 .transform(origPts,0,newPts,0,len);
-        paint = new Polygon();
+        //check to see if can rotate
+        Polygon temp = new Polygon();
         for (int i = 0; i < len; i++) {
-            paint.addPoint((int)newPts[i].getX(), (int)newPts[i].getY());
+            temp.addPoint((int)newPts[i].getX(), (int)newPts[i].getY());
         }
-        //System.out.println("Point 1 is " + paint.xpoints[0] +  "," + paint.ypoints[0]);
-        if(this.angle%360==0) {
-            this.angle=0;
-            remakeSquare();
-        }
+        if(check(temp)) {
+            paint = temp; 
+            if(this.angle%360==0||this.angle%180==0) {
+                remakeSquare();
+            } 
+        } else {
+            this.angle+=angle; //opposite as passed in angle *-1
+            dx=0;
+            dy=0;
+        }        
     }
-    
-    
-    
+
     public void doPhysics(){
-        x+=dx;
-        y+=dy;
-        paint.translate(toInt(dx), toInt(dy));
-        dy*=.9;
-        dx*=.9;
+        Polygon temp = new Polygon();
+        for (int i = 0; i < paint.npoints; i++) {
+            temp.addPoint(paint.xpoints[i]+toInt(dx), paint.ypoints[i]+toInt(dy));
+        }
+        if(check(temp)) {
+            paint = temp;
+            x+=dx;
+            y+=dy;
+            dy*=.9;
+            dx*=.9;
+        } else {
+            dy=0;
+            dx=0;
+        }
+        
     }
     
     public Polygon getShape() {
@@ -151,7 +183,7 @@ public class Robot {
         return hasCube;
     }
     
-    public void setAngle(int diff) {
+    private void setAngle(int diff) {
         angle+=diff;
         if(this.angle>=360) {
             this.angle-=360;
@@ -162,7 +194,7 @@ public class Robot {
         //System.out.println("New angle is " + angle);
     }
     
-    public Point calculateCenter(Polygon p) {
+    private Point calculateCenter(Polygon p) {
         Rectangle rect = p.getBounds();
         return new Point(rect.x+rect.width/2, rect.y+rect.height/2);
     }
@@ -186,4 +218,53 @@ public class Robot {
     private void remakeSquare() {
         setInitPaint(true);
     }
+    
+    private boolean check(Polygon p) {
+        //field
+        Polygon field = new Polygon();
+        for(int i = 0; i < PLAYINGCORDS[0].length; i++) {
+            field.addPoint(toInt(PLAYINGCORDS[0][i]*PPI), toInt(PLAYINGCORDS[1][i]*PPI));
+        }
+        for (int i = 0; i < p.npoints; i++) {
+            if(!field.contains(p.xpoints[i], p.ypoints[i])) {
+                return false;
+            }
+        }
+
+        ArrayList<Shape> pieces = new ArrayList();
+        //fences
+        Polygon[] fences = new Polygon[2];
+        for (int i = 0; i < FENCES.length; i++) {
+            fences[i] = new Polygon();
+            for (int j = 0; j < FENCES[i][0].length; j++) {
+                fences[i].addPoint(toInt(FENCES[i][0][j]*PPI), toInt(FENCES[i][1][j]*PPI));
+            }
+            pieces.add(fences[i]);
+        }
+        //scale
+        Rectangle scale = new Rectangle(toInt(MIDDLEX*PPI-8*PPI), toInt(PLATES[1][1][2]*PPI), toInt(15*PPI), toInt((PLATES[4][1][2]*PPI)-(PLATES[1][1][2]*PPI)));
+        pieces.add(scale);
+        
+        //robots
+        for (int i = 0; i < bots.length; i++) {
+            if(i!=num) {
+                pieces.add(bots[i].getShape());
+            }
+        }
+        
+        //check for collisions
+        Area r = new Area(p);
+        Area inter; 
+        for (int i = 0; i < pieces.size(); i++) {
+            inter = (Area)r.clone();
+            inter.intersect(new Area(pieces.get(i)));
+            if(!inter.isEmpty()) {
+                return false;
+            }
+        }
+        
+        
+        return true;
+    }
+
 }

@@ -4,15 +4,14 @@ import objects.Robot;
 
 public class PowerUpServer {
     
-    
+    public static Robot[] robots;
     
     public static void main(String[] args) {
         System.out.println("It ran");
         PowerUpClient[] clients = new PowerUpClient[6];
-        Robot[] robots = new Robot[6];
+        robots = new Robot[6];
         clients[0] = new PowerUpClient(0);
         robots[0] = clients[0].frame.getPanel().getRobot();
-        clients[0].frame.getPanel().setBot();
         while(true) {
             try {
                 Thread.sleep(50);
