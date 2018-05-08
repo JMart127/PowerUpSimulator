@@ -6,6 +6,7 @@
 package field;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 
 
@@ -69,5 +70,67 @@ public interface Field {
             {MIDDLEY-12, MIDDLEY-12, MIDDLEY-60, MIDDLEY-60}}, 
         {{RIGHTEDGE, RIGHTEDGE-36, RIGHTEDGE-36, RIGHTEDGE},
             {MIDDLEY+12, MIDDLEY+12, MIDDLEY+60, MIDDLEY+60}}
+    };
+    Point[] CUBELOC = {
+        new Point(131,27),
+        new Point(131,27),
+        new Point(131,27),
+        new Point(131,27),
+        new Point(131,27),
+        new Point(131,27),
+        new Point(131,27),//7
+        new Point(744,27),
+        new Point(744,27),
+        new Point(744,27),
+        new Point(744,27),
+        new Point(744,27),
+        new Point(744,27),
+        new Point(744,27),//14
+        new Point(744,320),
+        new Point(744,320),
+        new Point(744,320),
+        new Point(744,320),
+        new Point(744,320),
+        new Point(744,320),
+        new Point(744,320),//21
+        new Point(131,320),
+        new Point(131,320),
+        new Point(131,320),
+        new Point(131,320),
+        new Point(131,320),
+        new Point(131,320),
+        new Point(131,320),//28
+        new Point(245,158),
+        new Point(245,173),
+        new Point(245,187),
+        new Point(629,158),
+        new Point(629,173),
+        new Point(629,187),
+        new Point(232,166),
+        new Point(232,180),
+        new Point(219,173),
+        new Point(643,166),
+        new Point(643,180),
+        new Point(656,173), //bottom layer in cube zone 40
+        new Point(245,166),
+        new Point(245,180),
+        new Point(232,173),
+        new Point(629,166),
+        new Point(629,180),
+        new Point(643,173), //second layer 46
+        new Point(245,173),
+        new Point(629,173), //top two 48
+        new Point(317,104),
+        new Point(317,132),
+        new Point(317,160),
+        new Point(317,187),        
+        new Point(317,215),
+        new Point(317,243), //left 6 54
+        new Point(557,104),
+        new Point(557,132),
+        new Point(557,160),
+        new Point(557,187),        
+        new Point(557,215),
+        new Point(557,243), //right 6 60
     };
 }

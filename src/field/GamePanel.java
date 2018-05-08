@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.swing.JPanel;
+import objects.Cube;
 import objects.Robot;
 
 public class GamePanel extends JPanel implements Field {
@@ -13,13 +14,16 @@ public class GamePanel extends JPanel implements Field {
     int robotNum;
     Robot[] bots;
     Robot bot;
+    Cube[] cubes;
     
     public GamePanel(int robot) {
         setSize(500, 500);
         this.robotNum=robot;
         bot = new Robot(robot);
         bots = new Robot[6];
+        cubes = new Cube[60];
         createBots();
+        createCubes();
         bots[robotNum] = bot;
     }
     
@@ -29,12 +33,19 @@ public class GamePanel extends JPanel implements Field {
         }
     }
     
+    private void createCubes() {
+        for (int i = 0; i < 60; i++) {
+            cubes[i] = new Cube(0,0);
+        }
+    }
+    
     @Override
     public void paintComponent(Graphics og) {
         super.paintComponent(og);
         Graphics2D g = (Graphics2D)og;
         drawBoard(g);
         drawBots(g);
+        drawCubes(g);
     }
     
     public void drawBoard(Graphics2D g) {
@@ -166,6 +177,17 @@ public class GamePanel extends JPanel implements Field {
         }
     }
     
+    public void drawCubes(Graphics2D g) {
+        g.setColor(Color.yellow);
+        g.setStroke(new BasicStroke(toInt(2*PPI)));
+        for (int i = 0; i < 60; i++) {
+            g.setColor(Color.black);
+            g.drawPolygon(cubes[i].getShape());
+            g.setColor(Color.yellow);
+            g.fillPolygon(cubes[i].getShape());
+            
+        }
+    }
     public void turnLeft() {
         bot.rotate(10);
     }
@@ -193,5 +215,13 @@ public class GamePanel extends JPanel implements Field {
     public void setBots(Robot[] bots) {
         this.bots=bots;
         bot.setBotsArray(bots);
+    }
+    
+    public void setCubes(Cube[] cubes) {
+        this.cubes = cubes;
+    }
+    
+    private int toInt(double d) {
+        return (int)(Math.round(d));
     }
 }
