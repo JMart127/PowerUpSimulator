@@ -29,11 +29,21 @@ public class Cube implements Field {
         y+=dy;
     }
     
-    public void draw(int x, int y , int angle) {
+    public void draw(int x, int y , int angle, boolean bot) {
         p = new Polygon();
-        int x2 = x + toInt(15*Math.sqrt(2)*Math.sin(Math.toRadians(angle+45)));
-        int y2 = y + toInt(10*Math.sqrt(2)*Math.cos(Math.toRadians(angle+45)));
-        int a2 = angle;
+        int x2;
+        int y2;
+        int a2;
+        if(bot) {
+            x2 = x + toInt(15*Math.sqrt(2)*Math.sin(Math.toRadians(angle+45)));
+            y2 = y + toInt(10*Math.sqrt(2)*Math.cos(Math.toRadians(angle+45)));
+            a2 = angle; 
+        } else {
+            x2 = x;
+            y2 = y;
+            a2 = 0;
+        }
+        
         p.addPoint(x2, y2);
         //System.out.println((int)(x2*Field.PPI) + " " + (int)(y2*Field.PPI) + " " + a2);
         x2 = toInt((Math.cos(Math.toRadians(a2))*size*Field.PPI)+x2);
@@ -87,5 +97,10 @@ public class Cube implements Field {
     private Point calculateCenter(Polygon p) {
         Rectangle rect = p.getBounds();
         return new Point(rect.x+rect.width/2, rect.y+rect.height/2);
+    }
+    
+    public void setLoc(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }

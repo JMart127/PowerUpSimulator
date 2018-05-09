@@ -15,6 +15,7 @@ public class GamePanel extends JPanel implements Field {
     Robot[] bots;
     Robot bot;
     Cube[] cubes;
+    boolean[] plateCol;
     
     public GamePanel(int robot) {
         setSize(500, 500);
@@ -22,6 +23,10 @@ public class GamePanel extends JPanel implements Field {
         bot = new Robot(robot);
         bots = new Robot[6];
         cubes = new Cube[60];
+        plateCol = new boolean[6];
+        for (int i = 0; i < 6; i++) {
+            plateCol[i] = false;
+        }
         createBots();
         createCubes();
         bots[robotNum] = bot;
@@ -45,6 +50,7 @@ public class GamePanel extends JPanel implements Field {
         Graphics2D g = (Graphics2D)og;
         drawBoard(g);
         drawBots(g);
+        drawPlates(g);
         drawCubes(g);
     }
     
@@ -135,24 +141,6 @@ public class GamePanel extends JPanel implements Field {
         g.drawLine((int) (FENCES[0][0][1]*PPI), (int)(PLATFORMS[0][1][1]*PPI),
                 (int)(FENCES[1][0][1]*PPI), (int)(PLATFORMS[0][1][1]*PPI));
         
-        //Plates
-        g.setColor(Color.red);
-        Polygon[] plates = new Polygon[6];
-        for (int i = 0; i < PLATES.length; i++) {
-            plates[i] = new Polygon();
-            for (int j = 0; j < PLATES[i][0].length; j++) {
-                plates[i].addPoint((int) (PLATES[i][0][j]*PPI), (int)(PLATES[i][1][j]*PPI));
-            }
-            if(i%2==0) {
-                g.setColor(Color.red);
-            } else {
-                g.setColor(Color.BLUE);
-            }
-            g.fillPolygon(plates[i]);
-            g.setColor(Color.BLACK);
-            g.drawPolygon(plates[i]);
-        }
-        
         //Switch and scale lines
         g.setStroke(new BasicStroke((int)(10*PPI)));
         g.setColor(Color.black);
@@ -174,6 +162,24 @@ public class GamePanel extends JPanel implements Field {
                 g.setColor(Color.blue);
             }
             g.drawPolygon(bots[i].getShape());
+        }
+    }
+    
+    public void drawPlates(Graphics2D g) {
+        Polygon[] plates = new Polygon[6];
+        for (int i = 0; i < PLATES.length; i++) {
+            plates[i] = new Polygon();
+            for (int j = 0; j < PLATES[i][0].length; j++) {
+                plates[i].addPoint((int) (PLATES[i][0][j]*PPI), (int)(PLATES[i][1][j]*PPI));
+            }
+            if(plateCol[i]==true) {
+                g.setColor(Color.red);
+            } else {
+                g.setColor(Color.BLUE);
+            }    
+            g.fillPolygon(plates[i]);
+            g.setColor(Color.BLACK);
+            g.drawPolygon(plates[i]);
         }
     }
     
@@ -203,6 +209,12 @@ public class GamePanel extends JPanel implements Field {
         bot.back();
     }
     
+    public void placeCube() {
+        if(bot.hasCube()) {
+            bot.checkPlates();
+        }
+    }
+    
     public void refresh(Robot[] bots) {
         this.bots = bots;
     }
@@ -220,6 +232,11 @@ public class GamePanel extends JPanel implements Field {
         this.cubes = cubes;
         bot.setCubeArray(cubes);
     }
+    
+    public void setPlates(boolean[] plates) {
+        this.plateCol = plates;
+    }
+    
     
     private int toInt(double d) {
         return (int)(Math.round(d));

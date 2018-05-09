@@ -28,6 +28,8 @@ public class PowerUpClient {
                     case KeyEvent.VK_RIGHT:
                         frame.getPanel().turnRight();
                         break;
+                    case KeyEvent.VK_SPACE:
+                        frame.getPanel().placeCube();
                     default:
                        break;
                 }

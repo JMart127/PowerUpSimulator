@@ -6,6 +6,7 @@ import static field.Field.MIDDLEX;
 import static field.Field.PLATES;
 import static field.Field.PLAYINGCORDS;
 import static field.Field.PPI;
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -26,7 +27,6 @@ public class Robot {
     private double dx;
     private double dy;
     private final double d = 1.4;
-    private final boolean red;
     private int angle;
     private Polygon paint;
     private boolean hasCube=false;
@@ -36,7 +36,6 @@ public class Robot {
     
     public Robot(int num) {
         this.num = num;
-        red = num<3;
         angle = num<3 ? 0 : 180;
         setXY(num);
         paint = new Polygon();
@@ -155,7 +154,7 @@ public class Robot {
                 remakeSquare();
             } 
             if(hasCube) {
-                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle);
+                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle, true);
             }
         } else {
             this.angle+=angle; //opposite as passed in angle *-1
@@ -174,7 +173,7 @@ public class Robot {
             x+=dx;
             y+=dy;
             if(hasCube) {
-                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle);
+                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle, true);
             }
             dy*=.9;
             dx*=.9;
@@ -276,6 +275,16 @@ public class Robot {
         
         if(!hasCube) {
             cubeCheck(r);
+        } else {
+            for (int i = 0; i < cubes.length; i++) {
+                if (i!=cubeNum&&!cubes[i].isPlaced) {
+                  inter = (Area)r.clone();
+                    inter.intersect(new Area(cubes[i].getShape()));
+                    if(!inter.isEmpty()) {
+                        return false;
+                    }  
+                }
+            }
         }
         return true;
     }
@@ -285,12 +294,86 @@ public class Robot {
         for (int i = 0; i < cubes.length; i++) {
             inter = (Area)a.clone();
             inter.intersect(new Area(cubes[i].getShape()));
-            if(!inter.isEmpty()) {
+            if(inter.getBounds().height*inter.getBounds().width>100&&!cubes[i].isPlaced) {
                 hasCube = true;
                 cubeNum = i;
-                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle);
+                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle, true);
                 break;
             }
         }
+    }
+    
+    public void checkPlates() {
+        Polygon plate;
+        for (int i = 0; i < PLATES.length; i++) {
+            plate = new Polygon();
+            for (int j = 0; j < PLATES[i][0].length; j++) {
+                plate.addPoint(toInt(PLATES[i][0][j]*PPI), toInt(PLATES[i][1][j]*PPI));
+                
+            }
+            plate = resizeRect(plate);   
+            System.out.println(calculateCenter(paint).getX() +  " , "  + calculateCenter(paint).getY());
+            if(plate.contains(calculateCenter(paint))) {
+                placeCube(i);
+                break;
+            }
+        }   
+    }
+    
+    public void placeCube(int i) {
+        Polygon plate = new Polygon();
+        for (int j = 0; j < PLATES[i][0].length; j++) {
+           plate.addPoint(toInt(PLATES[i][0][j]*PPI), toInt(PLATES[i][1][j]*PPI));
+        }
+        int x2 = getMin(plate.xpoints);
+        int y2 = getMin(plate.ypoints);
+        x2 = x2+ toInt(Math.random()*(getDiff(plate.xpoints)-cubes[cubeNum].size*PPI));
+        y2 = y2+ toInt(Math.random()*(getDiff(plate.ypoints)-cubes[cubeNum].size*PPI));
+        cubes[cubeNum].setLoc(x2, y2);
+        cubes[cubeNum].draw(x2, y2, 0, false);
+        cubes[cubeNum].isPlaced=true;
+        hasCube = false;
+        cubeNum = -1;
+    }
+    
+    private Polygon resizeRect(Polygon p) {
+        int add = 35;
+        int minX = getMin(p.xpoints);
+        int maxX = getMax(p.xpoints);
+        int minY = getMin(p.ypoints);
+        int maxY = getMax(p.ypoints);
+        p = new Polygon();
+        p.addPoint(minX-add, minY-add);
+        p.addPoint(maxX+add, minY-add);
+        p.addPoint(maxX+add, maxY+add);
+        p.addPoint(minX-add, maxY+add);
+        for (int i = 0; i < p.npoints; i++) {
+            System.out.println(p.xpoints[i] + ", " + p.ypoints[i]);
+        }
+        return p;
+    }
+    
+    private int getDiff(int[] array) {
+        return getMax(array)-getMin(array);
+    }
+    
+    private int getMin(int[] array) {
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < array.length; i++) {
+            if(array[i]<min) {
+                min = array[i];
+            }
+        }
+        return min;
+    }
+    
+    private int getMax(int[] array) {
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < array.length; i++) {
+            if(array[i]>max) {
+                max = array[i];
+            }
+        }
+        return max;
     }
 }
