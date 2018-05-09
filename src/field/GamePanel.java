@@ -184,8 +184,7 @@ public class GamePanel extends JPanel implements Field {
             g.setColor(Color.black);
             g.drawPolygon(cubes[i].getShape());
             g.setColor(Color.yellow);
-            g.fillPolygon(cubes[i].getShape());
-            
+            g.fillPolygon(cubes[i].getShape());  
         }
     }
     public void turnLeft() {
@@ -219,6 +218,7 @@ public class GamePanel extends JPanel implements Field {
     
     public void setCubes(Cube[] cubes) {
         this.cubes = cubes;
+        bot.setCubeArray(cubes);
     }
     
     private int toInt(double d) {

@@ -29,8 +29,10 @@ public class Robot {
     private final boolean red;
     private int angle;
     private Polygon paint;
-    private boolean hasCube;
+    private boolean hasCube=false;
+    public int cubeNum=-1;
     public Robot[] bots;
+    public Cube[] cubes;
     
     public Robot(int num) {
         this.num = num;
@@ -45,6 +47,9 @@ public class Robot {
         this.bots=bots;
     }
     
+    public void setCubeArray(Cube[] cubes) {
+        this.cubes=cubes;
+    }
     private void setInitPaint(boolean remake) {
         int x2,y2,a2;
         if(remake) {
@@ -149,6 +154,9 @@ public class Robot {
             if(this.angle%360==0||this.angle%180==0) {
                 remakeSquare();
             } 
+            if(hasCube) {
+                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle);
+            }
         } else {
             this.angle+=angle; //opposite as passed in angle *-1
             dx=0;
@@ -165,6 +173,9 @@ public class Robot {
             paint = temp;
             x+=dx;
             y+=dy;
+            if(hasCube) {
+                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle);
+            }
             dy*=.9;
             dx*=.9;
         } else {
@@ -263,8 +274,23 @@ public class Robot {
             }
         }
         
-        
+        if(!hasCube) {
+            cubeCheck(r);
+        }
         return true;
     }
 
+    private void cubeCheck(Area a) {
+        Area inter;
+        for (int i = 0; i < cubes.length; i++) {
+            inter = (Area)a.clone();
+            inter.intersect(new Area(cubes[i].getShape()));
+            if(!inter.isEmpty()) {
+                hasCube = true;
+                cubeNum = i;
+                cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle);
+                break;
+            }
+        }
+    }
 }
