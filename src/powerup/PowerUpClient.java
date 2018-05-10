@@ -16,7 +16,7 @@ public class PowerUpClient {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if(game) {
+                if (game) {
                     switch (e.getKeyCode()) {
                         case KeyEvent.VK_UP:
                             frame.getPanel().goFoward();
@@ -36,7 +36,7 @@ public class PowerUpClient {
                             break;
                     }
                 }
-            }    
+            }
 
             @Override
             public void keyReleased(KeyEvent e) {
@@ -47,6 +47,5 @@ public class PowerUpClient {
             }
         });
     }
-    
-    
+
 }

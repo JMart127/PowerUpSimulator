@@ -25,7 +25,8 @@ public class Robot {
     private double y;
     private double dx;
     private double dy;
-    private final double d = 1.4;
+    private final double d = 4.8;
+    private final double dec = .7;
     private int angle;
     private Polygon paint;
     private boolean hasCube = false;
@@ -175,8 +176,8 @@ public class Robot {
             if (hasCube) {
                 cubes[cubeNum].draw(paint.xpoints[0], paint.ypoints[0], this.angle, true);
             }
-            dy *= .9;
-            dx *= .9;
+            dy *= dec;
+            dx *= dec;
         } else {
             dy = 0;
             dx = 0;
@@ -280,7 +281,7 @@ public class Robot {
                 if (i != cubeNum && !cubes[i].isPlaced) {
                     inter = (Area) r.clone();
                     inter.intersect(new Area(cubes[i].getShape()));
-                    if (!inter.isEmpty()) {
+                    if (inter.getBounds().height * inter.getBounds().width > 150) {
                         return false;
                     }
                 }

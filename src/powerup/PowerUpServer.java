@@ -12,6 +12,7 @@ public class PowerUpServer implements Field {
     public static int redScore;
     public static int blueScore;
     public static int[] plateCounts;
+
     public static enum scale {
         RED, BLUE, NONE
     }
@@ -50,7 +51,7 @@ public class PowerUpServer implements Field {
             clients[i].frame.getPanel().setPlates(plates);
         }
         game = true;
-        Thread scoreThread  = new Thread() {
+        Thread scoreThread = new Thread() {
             @Override
             public void run() {
                 for (int j = 150; j > -1; j--) {
@@ -61,39 +62,37 @@ public class PowerUpServer implements Field {
                     }
                     plateCounts = new int[6];
                     for (int i = 0; i < cubes.length; i++) {
-                        if(cubes[i].getPlate()>=0) {
+                        if (cubes[i].getPlate() >= 0) {
                             plateCounts[cubes[i].getPlate()]++;
                         }
                     }
                     for (int i = 0; i < 3; i++) {
-                        if(plates[i]==true) { //if plate is red
-                            if(plateCounts[i]>plateCounts[i+3]) { //if red>blue
-                                if(i!=2) { //keep red from scoring on far right
+                        if (plates[i] == true) { //if plate is red
+                            if (plateCounts[i] > plateCounts[i + 3]) { //if red>blue
+                                if (i != 2) { //keep red from scoring on far right
                                     redScore++;
-                                    scales[i] = scale.RED; 
-                                } 
-                            } else if (plateCounts[i]<plateCounts[i+3]) {
-                                if(i!=0) { //keep blue from scoring on the first
+                                    scales[i] = scale.RED;
+                                }
+                            } else if (plateCounts[i] < plateCounts[i + 3]) {
+                                if (i != 0) { //keep blue from scoring on the first
                                     blueScore++;
-                                    scales[i] = scale.BLUE; 
+                                    scales[i] = scale.BLUE;
                                 }
                             } else {
                                 scales[i] = scale.NONE;
+                            }
+                        } else if (plateCounts[i] > plateCounts[i + 3]) { //if red>blue
+                            if (i != 0) { //keep blue from scoring on the first
+                                blueScore++;
+                                scales[i] = scale.BLUE;
+                            }
+                        } else if (plateCounts[i] < plateCounts[i + 3]) {
+                            if (i != 2) { //keep red from scoring on far right
+                                redScore++;
+                                scales[i] = scale.RED;
                             }
                         } else {
-                            if(plateCounts[i]>plateCounts[i+3]) { //if red>blue
-                                if(i!=0) { //keep blue from scoring on the first
-                                    blueScore++;
-                                    scales[i] = scale.BLUE; 
-                                }
-                            } else if (plateCounts[i]<plateCounts[i+3]) {
-                                if(i!=2) { //keep red from scoring on far right
-                                    redScore++;
-                                    scales[i] = scale.RED; 
-                                }
-                            } else {
-                                scales[i] = scale.NONE;
-                            }
+                            scales[i] = scale.NONE;
                         }
                     }
                     for (int i = 0; i < 6; i++) {
@@ -101,10 +100,10 @@ public class PowerUpServer implements Field {
                     }
                 }
                 game = false;
-            }   
+            }
         };
         scoreThread.start();
-        
+
         while (game) {
             try {
                 Thread.sleep(50);

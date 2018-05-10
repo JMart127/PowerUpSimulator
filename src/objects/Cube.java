@@ -103,11 +103,11 @@ public class Cube implements Field {
         this.x = x;
         this.y = y;
     }
-    
+
     public int getPlate() {
         return plate;
     }
-    
+
     public void setPlate(int plate) {
         this.plate = plate;
     }

@@ -15,7 +15,7 @@ public class GameFrame extends JFrame {
         game = new GamePanel(number);
         setUpFrame(number);
     }
-    
+
     public void setUpFrame(int number) {
         int title = number + 1;
         setTitle("Robot " + title);
@@ -23,7 +23,7 @@ public class GameFrame extends JFrame {
         setLayout(null);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         add(game);
-        game.setBounds(0, 0, screen.width, (int)(360*PPI));
+        game.setBounds(0, 0, screen.width, (int) (360 * PPI));
         //getContentPane().add(game, BorderLayout.CENTER);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -33,16 +33,16 @@ public class GameFrame extends JFrame {
     public GamePanel getPanel() {
         return game;
     }
-    
+
     public ScorePanel getScore() {
         return score;
     }
-    
+
     public void addScorePanel(scale[] scales) {
         score = new ScorePanel(scales);
         add(score, 0);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        score.setBounds(0, (int)(361*PPI), screen.width, (int)(screen.height-(361*PPI)));
+        score.setBounds(0, (int) (361 * PPI), screen.width, (int) (screen.height - (361 * PPI)));
     }
 
 }
