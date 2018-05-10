@@ -16,13 +16,12 @@ public class PowerUpServer implements Field {
         RED, BLUE, NONE
     }
     public static scale[] scales;
-    public static int time;
+    public static boolean game;
 
     public static void main(String[] args) {
         PowerUpClient[] clients = new PowerUpClient[6];
         redScore = 0;
         blueScore = 0;
-        time = 150;
         //create arrays
         plates = createPlatform();
         cubes = new Cube[60];
@@ -42,7 +41,7 @@ public class PowerUpServer implements Field {
         }
         //fill robots
         for (int i = 0; i < 6; i++) {
-            clients[i].frame.addScorePanel(redScore, blueScore, time, scales);
+            clients[i].frame.addScorePanel(scales);
             robots[i] = clients[i].frame.getPanel().getRobot();
         }
         for (int i = 0; i < 6; i++) {
@@ -50,17 +49,16 @@ public class PowerUpServer implements Field {
             clients[i].frame.getPanel().setCubes(cubes);
             clients[i].frame.getPanel().setPlates(plates);
         }
-        
+        game = true;
         Thread scoreThread  = new Thread() {
             @Override
             public void run() {
-                while(true) {
+                for (int j = 150; j > -1; j--) {
                     try {
                         Thread.sleep(1000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    time--;
                     plateCounts = new int[6];
                     for (int i = 0; i < cubes.length; i++) {
                         if(cubes[i].getPlate()>=0) {
@@ -70,35 +68,44 @@ public class PowerUpServer implements Field {
                     for (int i = 0; i < 3; i++) {
                         if(plates[i]==true) { //if plate is red
                             if(plateCounts[i]>plateCounts[i+3]) { //if red>blue
-                                redScore++;
-                                scales[i] = scale.RED;
+                                if(i!=2) { //keep red from scoring on far right
+                                    redScore++;
+                                    scales[i] = scale.RED; 
+                                } 
                             } else if (plateCounts[i]<plateCounts[i+3]) {
-                                blueScore++;
-                                scales[i] = scale.BLUE;
+                                if(i!=0) { //keep blue from scoring on the first
+                                    blueScore++;
+                                    scales[i] = scale.BLUE; 
+                                }
                             } else {
                                 scales[i] = scale.NONE;
                             }
                         } else {
                             if(plateCounts[i]>plateCounts[i+3]) { //if red>blue
-                                blueScore++;
-                                scales[i] = scale.BLUE;
+                                if(i!=0) { //keep blue from scoring on the first
+                                    blueScore++;
+                                    scales[i] = scale.BLUE; 
+                                }
                             } else if (plateCounts[i]<plateCounts[i+3]) {
-                                redScore++;
-                                scales[i] = scale.RED;
+                                if(i!=2) { //keep red from scoring on far right
+                                    redScore++;
+                                    scales[i] = scale.RED; 
+                                }
                             } else {
                                 scales[i] = scale.NONE;
                             }
                         }
                     }
                     for (int i = 0; i < 6; i++) {
-                        clients[i].frame.getScore().refresh();
+                        clients[i].frame.getScore().refresh(redScore, blueScore, j);
                     }
                 }
+                game = false;
             }   
         };
         scoreThread.start();
         
-        while (true) {
+        while (game) {
             try {
                 Thread.sleep(50);
                 for (int i = 0; i < 6; i++) {

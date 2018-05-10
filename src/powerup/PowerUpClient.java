@@ -3,6 +3,7 @@ package powerup;
 import field.GameFrame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import static powerup.PowerUpServer.game;
 
 public class PowerUpClient {
 
@@ -15,25 +16,27 @@ public class PowerUpClient {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_UP:
-                        frame.getPanel().goFoward();
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        frame.getPanel().goBack();
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        frame.getPanel().turnLeft();
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        frame.getPanel().turnRight();
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        frame.getPanel().placeCube();
-                    default:
-                        break;
+                if(game) {
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_UP:
+                            frame.getPanel().goFoward();
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            frame.getPanel().goBack();
+                            break;
+                        case KeyEvent.VK_LEFT:
+                            frame.getPanel().turnLeft();
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            frame.getPanel().turnRight();
+                            break;
+                        case KeyEvent.VK_SPACE:
+                            frame.getPanel().placeCube();
+                        default:
+                            break;
+                    }
                 }
-            }
+            }    
 
             @Override
             public void keyReleased(KeyEvent e) {

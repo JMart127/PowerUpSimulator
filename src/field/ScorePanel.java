@@ -14,15 +14,13 @@ public class ScorePanel extends JPanel{
     int seconds = 150;
     scale[] scales;
     String text;
-    JTextArea wins;
+    JTextArea score;
     JTextArea[] scaleTexts;
     
-    public ScorePanel(int redScore, int blueScore, int seconds, scale[] scales) {
-        this.redScore=redScore;
-        this.blueScore=blueScore;
+    public ScorePanel(scale[] scales) {
         this.seconds=seconds;
         this.scales=scales;
-        wins = new  JTextArea();
+        score = new  JTextArea();
         scaleTexts = new JTextArea[3];
         scaleTexts[0] = new JTextArea("Switch 1");
         scaleTexts[1] = new JTextArea("  Scale ");
@@ -36,11 +34,19 @@ public class ScorePanel extends JPanel{
             scaleTexts[i].setFont(new Font("Times New Roman", Font.BOLD, 50));
             scaleTexts[i].setForeground(Color.white);
             add(scaleTexts[i]);
-            scaleTexts[i].setBounds(i*300+245, 5, 185, 60);
+            scaleTexts[i].setBounds(i*225+325, 5, 185, 60);
         }
+        add(score);
+        score.setFont(new Font("Times New Roman", Font.BOLD, 50));
+        score.setBackground(new Color(238,238,238));
+        score.setBounds(305, 70, 675, 120);
+        score.setText(getString());
     }
     
-    public void refresh() {
+    public void refresh(int red, int blue, int seconds) {
+        this.blueScore = blue;
+        this.redScore = red;
+        this.seconds = seconds;
         for (int i = 0; i < 3; i++) {
             if(scales[i]==scale.RED) {
                 scaleTexts[i].setBackground(Color.red);
@@ -49,6 +55,21 @@ public class ScorePanel extends JPanel{
             } else {
                 scaleTexts[i].setBackground(Color.gray);
             }
+        }
+        score.setText(getString());
+    }
+    
+    public String getString() {
+        return "Red Score: " + three(redScore) + " Blue Score: " + three(blueScore) + "\n                  Time: " + seconds;
+    }
+    
+    public String three(int i) {
+        if (i>=100) {
+            return i+"";
+        } else if(i>=10) {
+            return "0" + i;
+        } else {
+            return "00" + i;
         }
     }
 }

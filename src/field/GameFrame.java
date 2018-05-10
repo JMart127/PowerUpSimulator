@@ -38,8 +38,8 @@ public class GameFrame extends JFrame {
         return score;
     }
     
-    public void addScorePanel(int redScore, int blueScore, int seconds, scale[] scales) {
-        score = new ScorePanel(redScore, blueScore, seconds, scales);
+    public void addScorePanel(scale[] scales) {
+        score = new ScorePanel(scales);
         add(score, 0);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         score.setBounds(0, (int)(361*PPI), screen.width, (int)(screen.height-(361*PPI)));
