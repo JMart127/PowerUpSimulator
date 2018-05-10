@@ -5,14 +5,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class PowerUpClient {
-    
+
     GameFrame frame;
-    
+
     public PowerUpClient(int num) {
         frame = new GameFrame(num);
-        
+
         frame.addKeyListener(new KeyListener() {
-            
+
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
@@ -31,16 +31,19 @@ public class PowerUpClient {
                     case KeyEvent.VK_SPACE:
                         frame.getPanel().placeCube();
                     default:
-                       break;
+                        break;
                 }
             }
-            
+
             @Override
-            public void keyReleased(KeyEvent e) {}
-            
+            public void keyReleased(KeyEvent e) {
+            }
+
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
         });
     }
+    
     
 }
